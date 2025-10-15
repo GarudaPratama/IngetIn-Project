@@ -1,56 +1,83 @@
-import React from "react";
-import useDarkMode from "../hooks/useDarkMode";
-import logo from "../assets/logo.svg";
+import React, { useState } from "react";
+import useDarkMode from "../Hooks/useDarkMode";
+import logo from "../assets/logo-ingetin.png";
 import { Sun, Moon } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "react-hot-toast";
+import Swal from "sweetalert2";
 
-export default function Header() {
-  const [colorTheme, setTheme] = useDarkMode();
+const Header = () => {
+  const [isDarkMode, toggleDarkMode] = useDarkMode();
+  const [fadeActive, setFadeActive] = useState(false);
+
+  const handleToggle = () => {
+    setFadeActive(true);
+    setTimeout(() => {
+      toggleDarkMode();
+      setFadeActive(false);
+      toast.success(isDarkMode ? "Mode Terang Aktif 🌞" : "Mode Gelap Aktif 🌙");
+    }, 350);
+  };
+
+  const handleAbout = () => {
+    Swal.fire({
+      title: "Tentang IngetIn",
+      text: "Aplikasi catatan hafalan Qur'an dan dzikir harian — sederhana tapi bermakna.",
+      icon: "info",
+      confirmButtonText: "Keren!",
+      background: isDarkMode ? "#1f2937" : "#ffffff",
+      color: isDarkMode ? "#f9fafb" : "#111827",
+    });
+  };
 
   return (
-    <motion.header
-      initial={{ y: -60, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className="flex items-center justify-between px-6 py-4 bg-white dark:bg-gray-900 shadow-md sticky top-0 z-50 backdrop-blur-sm bg-opacity-90 dark:bg-opacity-80 transition-colors duration-300"
-    >
-      {/* Left: Logo + Text */}
-      <motion.div
-        whileHover={{ scale: 1.05 }}
-        className="flex items-center gap-3 cursor-pointer select-none"
-      >
-        <motion.img
-          src={logo}
-          alt="IngetIn Logo"
-          className="w-9 h-9 drop-shadow-sm"
-          initial={{ rotate: -15, opacity: 0 }}
-          animate={{ rotate: 0, opacity: 1 }}
-          transition={{ duration: 0.7, type: "spring" }}
-        />
-        <motion.h1
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-          className="text-2xl font-semibold text-gray-800 dark:text-white tracking-tight"
-        >
-          Inget<span className="text-emerald-500">In</span>
-        </motion.h1>
-      </motion.div>
-
-      {/* Right: Dark Mode Button */}
-      <motion.button
-        whileTap={{ scale: 0.9 }}
-        whileHover={{ rotate: 10 }}
-        onClick={() => setTheme(colorTheme)}
-        className="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300 shadow-sm"
-        aria-label="Toggle dark mode"
-      >
-        {colorTheme === "light" ? (
-          <Sun className="w-5 h-5 text-yellow-500 animate-pulse" />
-        ) : (
-          <Moon className="w-5 h-5 text-gray-300 animate-pulse" />
+    <>
+      <AnimatePresence>
+        {fadeActive && (
+          <motion.div
+            className={`fixed inset-0 z-[9999] ${
+              isDarkMode ? "bg-white" : "bg-black"
+            }`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+          />
         )}
-      </motion.button>
-    </motion.header>
+      </AnimatePresence>
+
+      <motion.header
+        initial={{ y: -30, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="flex justify-between items-center px-6 py-4 shadow-md bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50"
+      >
+        <motion.div
+          className="flex items-center gap-3 cursor-pointer"
+          whileHover={{ scale: 1.05 }}
+          onClick={handleAbout}
+        >
+          <img src={logo} alt="IngetIn Logo" className="w-10 h-10 rounded-xl" />
+          <span className="font-bold text-2xl text-emerald-600 dark:text-emerald-400 tracking-tight">
+            Inget<span className="text-gray-800 dark:text-gray-100">In</span>
+          </span>
+        </motion.div>
+
+        <motion.button
+          onClick={handleToggle}
+          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.1 }}
+          className="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300 shadow-sm hover:shadow-md"
+        >
+          {isDarkMode ? (
+            <Sun className="text-yellow-400 transition-transform duration-500" size={22} />
+          ) : (
+            <Moon className="text-gray-700 dark:text-gray-300 transition-transform duration-500" size={22} />
+          )}
+        </motion.button>
+      </motion.header>
+    </>
   );
-}
+};
+
+export default Header;
