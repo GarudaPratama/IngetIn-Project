@@ -2,7 +2,7 @@ import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import HafalanItem from "./HafalanItem.jsx";
 
-function HafalanList({ hafalanList, onDelete }) {
+function HafalanList({ hafalanList, onUpdate }) {
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4 text-emerald-600 dark:text-emerald-400">Daftar Hafalan</h2>
@@ -11,8 +11,10 @@ function HafalanList({ hafalanList, onDelete }) {
       ) : (
         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <AnimatePresence>
-            {[...hafalanList].reverse().map((hafalan, index) => (
-              <HafalanItem key={hafalan.id ?? index} hafalan={hafalan} index={index} onDelete={onDelete} />
+            {[...hafalanList].reverse().map((hafalan) => (
+              <motion.li key={hafalan.id} layout initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}>
+                <HafalanItem hafalan={hafalan} onDelete={onUpdate} />
+              </motion.li>
             ))}
           </AnimatePresence>
         </ul>
@@ -22,5 +24,3 @@ function HafalanList({ hafalanList, onDelete }) {
 }
 
 export default HafalanList;
-
-

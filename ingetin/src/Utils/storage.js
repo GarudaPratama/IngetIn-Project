@@ -1,26 +1,28 @@
 const STORAGE_KEY = "ingetin_hafalan";
 
 // Hafalan sekarang berbentuk object: { surat, ayatMulai, ayatAkhir, tipe }
-export function saveHafalan(hafalanObj) {
-  const existing = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-  existing.push(hafalanObj);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(existing));
-}
-
+// Ambil semua hafalan
 export function getHafalan() {
-  return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  return JSON.parse(localStorage.getItem("hafalanList") || "[]");
 }
 
-export function deleteHafalan(index) {
-  const existing = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-  existing.splice(index, 1);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(existing));
+// Tambah hafalan baru dengan id unik
+export function saveHafalan(hafalan) {
+  const list = JSON.parse(localStorage.getItem("hafalanList") || "[]");
+  list.push({ ...hafalan, id: Date.now() });
+  localStorage.setItem("hafalanList", JSON.stringify(list));
 }
 
-export function updateHafalan(index, newHafalanObj) {
-  const existing = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-  if (index >= 0 && index < existing.length) {
-    existing[index] = newHafalanObj;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(existing));
-  }
+// Hapus hafalan pakai id
+export function deleteHafalan(id) {
+  let list = JSON.parse(localStorage.getItem("hafalanList") || "[]");
+  list = list.filter(h => h.id !== id);
+  localStorage.setItem("hafalanList", JSON.stringify(list));
+}
+
+// Update hafalan pakai id
+export function updateHafalan(id, updatedHafalan) {
+  let list = JSON.parse(localStorage.getItem("hafalanList") || "[]");
+  list = list.map(h => (h.id === id ? { ...h, ...updatedHafalan } : h));
+  localStorage.setItem("hafalanList", JSON.stringify(list));
 }
