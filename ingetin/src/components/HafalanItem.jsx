@@ -73,6 +73,15 @@ function HafalanItem({ hafalan, onDelete }) {
 
   const badgeColor = hafalan.type === "Ziyadah" ? "bg-emerald-500 text-white" : "bg-green-300 text-gray-900";
 
+  // Format tanggal & waktu
+  const formattedDate = hafalan.timestamp ? new Date(hafalan.timestamp).toLocaleString("id-ID", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }) : "";
+
   return (
     <motion.div
       initial={{ opacity: 0, y: -10 }}
@@ -88,6 +97,7 @@ function HafalanItem({ hafalan, onDelete }) {
         ) : (
           <p className="text-gray-700 dark:text-gray-300">Juz {hafalan.juzMulai} &rarr; {hafalan.juzAkhir} {hafalan.extraMurojaah ? `(${hafalan.extraMurojaah})` : ""}</p>
         )}
+        {formattedDate && <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">{formattedDate}</p>}
         <span className={`inline-block mt-2 px-3 py-1 rounded-full text-sm font-semibold ${badgeColor} transition-all duration-300 transform hover:scale-105`}>
           {hafalan.type}
         </span>
