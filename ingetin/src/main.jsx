@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { HashRouter, Routes, Route, useLocation } from "react-router-dom"; // ganti BrowserRouter jadi HashRouter
 import { AnimatePresence, motion } from "framer-motion";
 import App from "./App.jsx";
 import LandingPage from "./components/LandingPage.jsx";
@@ -45,9 +45,8 @@ const AnimatedRoutes = () => {
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <AnimatedRoutes />
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>
 );
-
