@@ -164,7 +164,7 @@ function LandingPage() {
                 desc: "Mulai hafalan kapan saja tanpa ribet, langsung dari perangkatmu.",
               },
               {
-                img: "/src/assets/money1.png",
+                img: "/src/assets/like1.png",
                 title: "Mudah Digunakan",
                 desc: "Antarmuka simpel dan responsif di semua perangkat.",
               },
