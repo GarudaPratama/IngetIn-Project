@@ -1,25 +1,29 @@
 import React from "react";
+import { motion } from "framer-motion";
 import HafalanItem from "./HafalanItem";
 
 function HafalanList({ hafalanList, onRefresh }) {
   return (
-    <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {hafalanList.length > 0 ? (
-        hafalanList.map((hafalan) => (
-          <HafalanItem
-            key={hafalan.id}
-            hafalan={hafalan}
-            onDelete={onRefresh}
-          />
-        ))
-      ) : (
-        <p className="text-gray-500 dark:text-gray-400 text-center col-span-3 py-8">
-          Belum ada hafalan disimpan.
+    <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {hafalanList.length === 0 ? (
+        <p className="text-center text-gray-600 dark:text-gray-400 col-span-full">
+          Belum ada hafalan ditambahkan.
         </p>
+      ) : (
+        hafalanList.map((item) => (
+          <motion.div
+            key={item.id}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4 }}
+          >
+            <HafalanItem hafalan={item} onRefresh={onRefresh} />
+          </motion.div>
+        ))
       )}
     </div>
   );
 }
 
 export default HafalanList;
-

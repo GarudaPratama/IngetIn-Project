@@ -9,12 +9,14 @@ function HafalanForms({ onAdd }) {
     ayatMulai: "",
     suratAkhir: "",
     ayatAkhir: "",
+    reminder: "", // ADDED
   });
 
   const [murojaah, setMurojaah] = useState({
     juzMulai: "",
     juzAkhir: "",
     extraMurojaah: "",
+    reminder: "", // ADDED
   });
 
   const handleSubmitZiyadah = (e) => {
@@ -23,11 +25,18 @@ function HafalanForms({ onAdd }) {
       id: Date.now(),
       type: "Ziyadah",
       ...ziyadah,
+      status: "belum", // ADDED
       date: new Date().toISOString(),
     };
     saveHafalan(data);
     onAdd();
-    setZiyadah({ suratMulai: "", ayatMulai: "", suratAkhir: "", ayatAkhir: "" });
+    setZiyadah({
+      suratMulai: "",
+      ayatMulai: "",
+      suratAkhir: "",
+      ayatAkhir: "",
+      reminder: "",
+    });
     Swal.fire({
       icon: "success",
       title: "Ziyadah ditambahkan!",
@@ -37,8 +46,6 @@ function HafalanForms({ onAdd }) {
 
   const handleSubmitMurojaah = (e) => {
     e.preventDefault();
-
-    // validasi: kalau juz berbeda, hapus tambahan
     let finalData = { ...murojaah };
     if (murojaah.juzMulai !== murojaah.juzAkhir) {
       finalData.extraMurojaah = "";
@@ -48,12 +55,18 @@ function HafalanForms({ onAdd }) {
       id: Date.now(),
       type: "Murojaah",
       ...finalData,
+      status: "belum", // ADDED
       date: new Date().toISOString(),
     };
 
     saveHafalan(data);
     onAdd();
-    setMurojaah({ juzMulai: "", juzAkhir: "", extraMurojaah: "" });
+    setMurojaah({
+      juzMulai: "",
+      juzAkhir: "",
+      extraMurojaah: "",
+      reminder: "",
+    });
     Swal.fire({
       icon: "success",
       title: "Murojaah ditambahkan!",
@@ -61,7 +74,6 @@ function HafalanForms({ onAdd }) {
     });
   };
 
-  // validasi untuk dropdown tambahan
   const isSameJuz = murojaah.juzMulai === murojaah.juzAkhir && murojaah.juzMulai !== "";
 
   const inputClass =
@@ -71,7 +83,7 @@ function HafalanForms({ onAdd }) {
 
   return (
     <div className="grid md:grid-cols-2 gap-6 mt-6">
-      {/* Ziyadah Form */}
+      {/* ---------------- Ziyadah Form ---------------- */}
       <motion.form
         onSubmit={handleSubmitZiyadah}
         initial={{ opacity: 0, y: 20 }}
@@ -81,15 +93,14 @@ function HafalanForms({ onAdd }) {
         <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
           🕋 Tambah Ziyadah
         </h2>
+
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className={labelClass}>Surat Mulai</label>
             <input
               type="text"
               value={ziyadah.suratMulai}
-              onChange={(e) =>
-                setZiyadah({ ...ziyadah, suratMulai: e.target.value })
-              }
+              onChange={(e) => setZiyadah({ ...ziyadah, suratMulai: e.target.value })}
               className={inputClass}
               required
             />
@@ -99,9 +110,7 @@ function HafalanForms({ onAdd }) {
             <input
               type="text"
               value={ziyadah.suratAkhir}
-              onChange={(e) =>
-                setZiyadah({ ...ziyadah, suratAkhir: e.target.value })
-              }
+              onChange={(e) => setZiyadah({ ...ziyadah, suratAkhir: e.target.value })}
               className={inputClass}
               required
             />
@@ -111,9 +120,7 @@ function HafalanForms({ onAdd }) {
             <input
               type="number"
               value={ziyadah.ayatMulai}
-              onChange={(e) =>
-                setZiyadah({ ...ziyadah, ayatMulai: e.target.value })
-              }
+              onChange={(e) => setZiyadah({ ...ziyadah, ayatMulai: e.target.value })}
               className={inputClass}
               required
             />
@@ -123,9 +130,19 @@ function HafalanForms({ onAdd }) {
             <input
               type="number"
               value={ziyadah.ayatAkhir}
-              onChange={(e) =>
-                setZiyadah({ ...ziyadah, ayatAkhir: e.target.value })
-              }
+              onChange={(e) => setZiyadah({ ...ziyadah, ayatAkhir: e.target.value })}
+              className={inputClass}
+              required
+            />
+          </div>
+
+          {/* ADDED: Waktu Pengingat */}
+          <div className="col-span-2">
+            <label className={labelClass}>Waktu Pengingat</label>
+            <input
+              type="datetime-local"
+              value={ziyadah.reminder}
+              onChange={(e) => setZiyadah({ ...ziyadah, reminder: e.target.value })}
               className={inputClass}
               required
             />
@@ -140,7 +157,7 @@ function HafalanForms({ onAdd }) {
         </motion.button>
       </motion.form>
 
-      {/* Murojaah Form */}
+      {/* ---------------- Murojaah Form ---------------- */}
       <motion.form
         onSubmit={handleSubmitMurojaah}
         initial={{ opacity: 0, y: 20 }}
@@ -150,15 +167,14 @@ function HafalanForms({ onAdd }) {
         <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
           📖 Tambah Murojaah
         </h2>
+
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className={labelClass}>Juz Mulai</label>
             <input
               type="number"
               value={murojaah.juzMulai}
-              onChange={(e) =>
-                setMurojaah({ ...murojaah, juzMulai: e.target.value })
-              }
+              onChange={(e) => setMurojaah({ ...murojaah, juzMulai: e.target.value })}
               className={inputClass}
               required
             />
@@ -168,9 +184,7 @@ function HafalanForms({ onAdd }) {
             <input
               type="number"
               value={murojaah.juzAkhir}
-              onChange={(e) =>
-                setMurojaah({ ...murojaah, juzAkhir: e.target.value })
-              }
+              onChange={(e) => setMurojaah({ ...murojaah, juzAkhir: e.target.value })}
               className={inputClass}
               required
             />
@@ -199,6 +213,18 @@ function HafalanForms({ onAdd }) {
             <option value="1/4">1/4 Juz</option>
             <option value="1/2">1/2 Juz</option>
           </select>
+        </div>
+
+        {/* ADDED: Waktu Pengingat */}
+        <div className="mt-4">
+          <label className={labelClass}>Waktu Pengingat</label>
+          <input
+            type="datetime-local"
+            value={murojaah.reminder}
+            onChange={(e) => setMurojaah({ ...murojaah, reminder: e.target.value })}
+            className={inputClass}
+            required
+          />
         </div>
 
         <motion.button
