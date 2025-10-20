@@ -202,8 +202,18 @@ function LandingPage() {
         </motion.div>
         
         {/* Bagian Iklan */}
-        <motion.div>
-            
+        <motion.div className="pt-[220px] flex flex-row items-center justify-center">
+           <motion.img
+            src="/src/assets/iphone.png"
+            alt="Hape Gambar"
+            className="w-96"
+           >
+
+           </motion.img>
+           <motion.div>
+            <motion.h1 className="text-5xl font-bold w-[500px]">Semua Hafalanmu, dalam satu Aplikasi</motion.h1>
+            <motion.p className="text-2xl font  w-[700px]">IngetIn membantu anda mencatat, mengulang, dan menjaga hafalan dengan cara yang mudah dan menyenangkan. Tanpa ribet, lupa, kapan pun anda butuh.</motion.p>
+           </motion.div>
         </motion.div>
 
         <div className="h-24 md:h-32" />
