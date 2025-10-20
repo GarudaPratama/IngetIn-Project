@@ -1,49 +1,61 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
-import { deleteHafalan, updateHafalan } from "../Utils/storage.js";
-import { Edit3, Trash2, ArrowRight, CheckCircle2, AlertTriangle } from "lucide-react";
+import {
+  deleteHafalan,
+  updateHafalan,
+} from "../Utils/storage.js";
+import {
+  Edit3,
+  Trash2,
+  CheckCircle2,
+  AlertTriangle,
+  Clock,
+} from "lucide-react";
 
 function HafalanItem({ hafalan, onDelete, onRefresh }) {
-  // 🔁 Trigger refresh di parent
+  const [timeLeft, setTimeLeft] = useState("");
+
   const triggerRefresh = () => {
     if (typeof onRefresh === "function") onRefresh();
     if (typeof onDelete === "function") onDelete();
     window.dispatchEvent(new Event("hafalan-updated"));
   };
 
-  // ⏰ Cek otomatis jika waktu reminder sudah lewat
+  // 🕒 Update countdown setiap menit
   useEffect(() => {
-    if (hafalan.status === "belum" && hafalan.reminder) {
-      const now = new Date();
-      const reminderTime = new Date(hafalan.reminder);
-      if (now > reminderTime) {
-        updateHafalan(hafalan.id, { status: "gagal" });
-        triggerRefresh();
-      }
-    }
-  }, []);
+    if (!hafalan.reminder) return;
 
-  // ⏰ Tampilkan notifikasi saat pengingat waktunya tiba
-  useEffect(() => {
-    if (hafalan.status === "belum" && hafalan.reminder) {
+    const updateCountdown = () => {
       const now = new Date();
       const reminderTime = new Date(hafalan.reminder);
-      const diff = reminderTime - now;
-      if (diff > 0) {
-        const timer = setTimeout(() => {
+      const diffMs = reminderTime - now;
+
+      if (diffMs <= 0) {
+        setTimeLeft("⏰ Waktu habis!");
+        if (hafalan.status === "belum") {
+          updateHafalan(hafalan.id, { status: "gagal" });
+          triggerRefresh();
           Swal.fire({
-            icon: "info",
-            title: `⏰ Waktunya ${hafalan.type}!`,
-            text: hafalan.type === "Ziyadah"
-              ? `Ziyadah: ${hafalan.suratMulai} ${hafalan.ayatMulai} → ${hafalan.suratAkhir} ${hafalan.ayatAkhir}`
-              : `Murojaah: Juz ${hafalan.juzMulai} → ${hafalan.juzAkhir}`,
-            confirmButtonColor: "#10B981",
+            icon: "error",
+            title: `Hafalan ${hafalan.type} gagal 😢`,
+            text: "Waktu pengingat sudah lewat.",
+            confirmButtonColor: "#ef4444",
           });
-        }, diff);
-        return () => clearTimeout(timer);
+        }
+        return;
       }
-    }
+
+      const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diffMs / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diffMs / (1000 * 60)) % 60);
+
+      setTimeLeft(`${days}h ${hours}j ${minutes}m`);
+    };
+
+    updateCountdown();
+    const timer = setInterval(updateCountdown, 60000);
+    return () => clearInterval(timer);
   }, [hafalan]);
 
   // 🗑️ Hapus hafalan
@@ -159,8 +171,9 @@ function HafalanItem({ hafalan, onDelete, onRefresh }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ scale: 1.02 }}
-      className="rounded-2xl overflow-hidden shadow-md bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 transition-all"
+      className="relative rounded-2xl overflow-hidden shadow-md bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 transition-all"
     >
+      {/* Header card */}
       <div
         className={`${headerColor} text-white font-semibold px-4 py-2 flex justify-between items-center`}
       >
@@ -170,7 +183,8 @@ function HafalanItem({ hafalan, onDelete, onRefresh }) {
         </span>
       </div>
 
-      <div className="p-4">
+      {/* Isi utama kartu */}
+      <div className="p-4 relative">
         <p className="text-gray-900 dark:text-gray-100 font-semibold text-lg flex items-center gap-2">
           {hafalan.type === "Ziyadah"
             ? `${hafalan.suratMulai} ${hafalan.ayatMulai} → ${hafalan.suratAkhir} ${hafalan.ayatAkhir}`
@@ -180,16 +194,28 @@ function HafalanItem({ hafalan, onDelete, onRefresh }) {
         </p>
 
         <p className="text-sm mt-1">
-          Status: <span className={`${statusColor} font-semibold`}>{hafalan.status}</span>
+          Status:{" "}
+          <span className={`${statusColor} font-semibold`}>
+            {hafalan.status}
+          </span>
         </p>
 
         {hafalan.reminder && (
           <p className="text-gray-500 dark:text-gray-400 text-sm mt-1 flex items-center gap-1">
-            <AlertTriangle size={14} /> {new Date(hafalan.reminder).toLocaleString("id-ID")}
+            <AlertTriangle size={14} />{" "}
+            {new Date(hafalan.reminder).toLocaleString("id-ID")}
           </p>
         )}
 
-        <div className="flex justify-end gap-2 mt-4">
+        {/* ⏳ Countdown di pojok kiri bawah */}
+        {hafalan.reminder && (
+          <div className="absolute bottom-2 left-3 flex items-center gap-1 text-xs text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full shadow-sm">
+            <Clock size={12} /> {timeLeft}
+          </div>
+        )}
+
+        {/* Tombol aksi */}
+        <div className="flex justify-end gap-2 mt-6">
           {hafalan.status === "belum" && (
             <motion.button
               whileHover={{ scale: 1.1 }}

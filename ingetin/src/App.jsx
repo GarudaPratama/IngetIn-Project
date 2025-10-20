@@ -12,13 +12,11 @@ function App() {
   const navigate = useNavigate();
   const reminderTimer = useRef(null);
 
-  // 🔹 Ambil data hafalan dari localStorage
   const loadHafalan = () => {
     const data = getHafalan().sort((a, b) => b.date.localeCompare(a.date));
     setHafalanList(data);
   };
 
-  // 🔹 Jalankan ketika app dibuka
   useEffect(() => {
     loadHafalan();
 
@@ -34,6 +32,11 @@ function App() {
 
     // Jalankan pengingat otomatis
     startReminderSystem();
+
+    // Minta izin notifikasi browser
+    if (Notification && Notification.permission !== "granted") {
+      Notification.requestPermission();
+    }
 
     return () => {
       window.removeEventListener("storage", onStorage);
@@ -71,42 +74,35 @@ function App() {
         // kalau masih belum lewat, cek kondisi per jam
         if (item.status === "belum") {
           if (diffHours > 24 && diffHours <= 32) {
-            // lebih dari 1 hari → ingatkan setiap 8 jam
-            Swal.fire({
-              icon: "info",
-              title: `📘 Pengingat ${item.type}`,
-              text: `Waktu hafalan ${item.type} masih lebih dari 1 hari lagi.`,
-              confirmButtonColor: "#10B981",
-              timer: 4000,
-            });
+            showReminder(item, `Waktu hafalan ${item.type} masih lebih dari 1 hari lagi.`);
           } else if (diffHours <= 24 && diffHours > 1) {
-            // sisa 1 hari → ingatkan tiap jam
-            Swal.fire({
-              icon: "warning",
-              title: `📖 Hafalan ${item.type} sudah mendekati waktu!`,
-              text: `Kurang dari 24 jam lagi.`,
-              confirmButtonColor: "#facc15",
-              timer: 4000,
-            });
+            showReminder(item, `Kurang dari 24 jam lagi untuk hafalan ${item.type}.`);
           } else if (diffHours <= 1 && diffHours > 0) {
-            // sisa < 1 jam → setiap buka app
-            Swal.fire({
-              icon: "warning",
-              title: `⚠️ Hampir waktunya!`,
-              text: `Kurang dari 1 jam untuk hafalan ${item.type}.`,
-              confirmButtonColor: "#ef4444",
-              timer: 5000,
-            });
+            showReminder(item, `⚠️ Kurang dari 1 jam lagi untuk ${item.type}.`);
           }
         }
       });
     };
 
-    // Cek pertama kali saat app dibuka
     checkReminders();
-
-    // Jalankan setiap 1 jam (otomatis)
     reminderTimer.current = setInterval(checkReminders, 60 * 60 * 1000);
+  };
+
+  // 🔔 Notifikasi Alert + Browser
+  const showReminder = (item, message) => {
+    Swal.fire({
+      icon: "info",
+      title: `📘 Pengingat ${item.type}`,
+      text: message,
+      confirmButtonColor: "#10B981",
+      timer: 4000,
+    });
+
+    if (Notification && Notification.permission === "granted") {
+      new Notification(`📖 ${item.type} - Pengingat Hafalan`, {
+        body: message,
+      });
+    }
   };
 
   const handleImport = (file) => {
