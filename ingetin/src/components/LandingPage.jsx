@@ -200,6 +200,11 @@ function LandingPage() {
             ))}
           </motion.div>
         </motion.div>
+        
+        {/* Bagian Iklan */}
+        <motion.div>
+            
+        </motion.div>
 
         <div className="h-24 md:h-32" />
       </div>
