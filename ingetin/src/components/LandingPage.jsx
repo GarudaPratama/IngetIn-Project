@@ -211,8 +211,8 @@ function LandingPage() {
 
            </motion.img>
            <motion.div>
-            <motion.h1 className="text-5xl font-bold w-[500px]">Semua Hafalanmu, dalam satu Aplikasi</motion.h1>
-            <motion.p className="text-2xl font  w-[700px]">IngetIn membantu anda mencatat, mengulang, dan menjaga hafalan dengan cara yang mudah dan menyenangkan. Tanpa ribet, lupa, kapan pun anda butuh.</motion.p>
+            <motion.h1 className="text-5xl font-bold w-[500px] dark:text-white">Semua Hafalanmu, dalam satu Aplikasi</motion.h1>
+            <motion.p className="text-2xl font dark:text-white w-[700px]">IngetIn membantu anda mencatat, mengulang, dan menjaga hafalan dengan cara yang mudah dan menyenangkan. Tanpa ribet, lupa, kapan pun anda butuh.</motion.p>
            </motion.div>
         </motion.div>
 
