@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import Header from "./Header";
@@ -10,9 +10,96 @@ function LandingPage() {
     await loadFull(main);
   };
 
+  const testimonials = [
+  {
+    img: "/src/assets/testimonial1.png",
+    name: "Sk3cho0",
+    text: "Aplikasinya bener-bener ngebantu banget buat nyusun hafalan. Sekarang muroja’ah jadi lebih teratur.",
+    rating: 5,
+  },
+  {
+    img: "/src/assets/testimonial2.png",
+    name: "Siti Nurhaliza",
+    text: "Interface-nya lembut banget, mata ga capek. Cocok buat anak-anak juga.",
+    rating: 5,
+  },
+  {
+    img: "/src/assets/testimonial3.png",
+    name: "Fahri Al Faruq",
+    text: "Fitur pengingatnya keren, tiap buka aplikasi langsung inget hafalan yang belum selesai.",
+    rating: 4,
+  },
+  {
+    img: "/src/assets/testimonial4.png",
+    name: "Mira Latifah",
+    text: "Sangat berguna buat santri, simple dan efisien.",
+    rating: 5,
+  },
+  {
+    img: "/src/assets/testimonial5.png",
+    name: "Abdul Karim",
+    text: "Dulu sering lupa muroja’ah, sekarang tiap hari diingatkan. MasyaAllah!",
+    rating: 5,
+  },
+  {
+    img: "/src/assets/testimonial6.png",
+    name: "Fatimah Zahra",
+    text: "Suka banget sama tampilannya, elegan dan adem. Ga berat juga di HP.",
+    rating: 4,
+  },
+  {
+    img: "/src/assets/testimonial7.png",
+    name: "Umar Hanif",
+    text: "Kalau ada fitur set target hafalan mingguan bakal lebih keren lagi.",
+    rating: 4,
+  },
+  {
+    img: "/src/assets/testimonial8.png",
+    name: "Dina Khairunnisa",
+    text: "Udah nyobain banyak app hafalan, tapi ini paling stabil dan gampang dipakai.",
+    rating: 5,
+  },
+  {
+    img: "/src/assets/testimonial9.png",
+    name: "Taufiq Ramadhan",
+    text: "Auto reminder dan tampilan dark mode-nya bikin nyaman banget waktu malam hari.",
+    rating: 5,
+  },
+];
+
+
+  const controls = useAnimation();
+  const [x, setX] = React.useState(0);
+  const maxScroll = -1200;
+
+  React.useEffect(() => {
+    let animation;
+    const loop = async () => {
+      while (true) {
+        await controls.start({
+          x: [0, maxScroll],
+          transition: { duration: 25, ease: "linear" },
+        });
+        await controls.start({ x: 0, transition: { duration: 0 } });
+      }
+    };
+    animation = loop();
+    return () => controls.stop();
+  }, [controls]);
+
+  const handleNext = () => {
+    setX((prev) => Math.max(prev - 320, maxScroll));
+    controls.start({ x: Math.max(x - 320, maxScroll), transition: { duration: 0.5 } });
+  };
+
+  const handlePrev = () => {
+    setX((prev) => Math.min(prev + 320, 0));
+    controls.start({ x: Math.min(x + 320, 0), transition: { duration: 0.5 } });
+  };
+
   return (
     <div className="min-h-screen relative overflow-x-hidden">
-      {/* Particles Interaktif + Parallax Effect */}
+      {/* Background Particles */}
       <Particles
         id="tsparticles"
         init={particlesInit}
@@ -41,11 +128,8 @@ function LandingPage() {
             move: {
               enable: true,
               speed: 1.5,
-              direction: "none",
               random: true,
-              straight: false,
               outModes: "bounce",
-              parallax: { enable: true, force: 60, smooth: 20 },
             },
             links: {
               enable: true,
@@ -59,9 +143,7 @@ function LandingPage() {
         }}
       />
 
-      {/* Background Gradient */}
       <div className="min-h-screen bg-gradient-to-br from-emerald-100 to-emerald-300 dark:from-gray-800 dark:to-gray-900 transition-colors relative z-10">
-        {/* Header */}
         <Header />
 
         {/* Hero Section */}
@@ -75,83 +157,36 @@ function LandingPage() {
             src="/src/assets/logo-ingetin.png"
             alt="IngetIn Logo"
             className="w-[300px] md:w-[410px] h-[300px] md:h-[410px]"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
           />
-
-          <motion.div
-            className="text-center md:text-left max-w-md md:max-w-xl"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <motion.h1
-              className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-12"
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
+          <div className="text-center md:text-left max-w-md md:max-w-xl">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-12">
               Inget<span className="text-emerald-600 dark:text-emerald-400">In</span>
-            </motion.h1>
-
-            <motion.p
-              className="text-gray-700 dark:text-gray-300 mb-16 font-normal sm:text-xl"
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
+            </h1>
+            <p className="text-gray-700 dark:text-gray-300 mb-16 font-normal sm:text-xl">
               Aplikasi hafalan yang ringan, responsif, dan bisa dipakai kapan saja.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
+            </p>
+            <Link
+              to="/app"
+              className="px-6 py-3 md:px-8 md:py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-semibold shadow-lg transition-all"
             >
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link
-                  to="/app"
-                  className="px-6 py-3 md:px-8 md:py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-semibold shadow-lg transition-all"
-                >
-                  Mulai Sekarang
-                </Link>
-              </motion.div>
-            </motion.div>
-          </motion.div>
+              Mulai Sekarang
+            </Link>
+          </div>
         </motion.div>
 
-        {/* Kelebihan IngetIn */}
+        {/* Kelebihan Section */}
         <motion.div
           className="mt-24 md:mt-32 px-4 md:px-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.6 }}
         >
-          <motion.h1
-            className="text-4xl sm:text-5xl md:text-5xl font-semibold text-gray-900 dark:text-white text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
+          <h1 className="text-4xl md:text-5xl font-semibold text-gray-900 dark:text-white text-center mb-16">
             Kelebihan Inget<span className="text-emerald-600 dark:text-emerald-400">In</span>
-          </motion.h1>
+          </h1>
 
-          {/* Cards Container dengan stagger animation */}
-          <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-            initial="hidden"
-            whileInView="visible"
-            variants={{
-              hidden: {},
-              visible: {
-                transition: { staggerChildren: 0.2 },
-              },
-            }}
-            viewport={{ once: true }}
-          >
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
                 img: "/src/assets/money1.png",
@@ -161,7 +196,7 @@ function LandingPage() {
               {
                 img: "/src/assets/kilat1.png",
                 title: "Praktis dan Cepat",
-                desc: "Mulai hafalan kapan saja tanpa ribet, langsung dari perangkatmu.",
+                desc: "Mulai hafalan kapan saja tanpa ribet.",
               },
               {
                 img: "/src/assets/like1.png",
@@ -171,18 +206,11 @@ function LandingPage() {
             ].map((card, i) => (
               <motion.div
                 key={i}
-                className="bg-white dark:bg-gray-700 rounded-2xl shadow-lg py-10 px-6 flex flex-col justify-center items-center text-center transition-all cursor-pointer w-full max-w-[320px] mx-auto h-[420px]"
-                variants={{
-                  hidden: { opacity: 0, y: 40 },
-                  visible: { opacity: 1, y: 0 },
-                }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="bg-white dark:bg-gray-700 rounded-2xl shadow-lg py-10 px-6 flex flex-col justify-center items-center text-center transition-all w-full max-w-[320px] mx-auto h-[420px]"
                 whileHover={{
-                  scale: 1.06,
-                  rotate: 0.5,
-                  y: -6,
-                  boxShadow: "0 20px 40px rgba(0,0,0,0.25)",
-                  transition: { type: "spring", stiffness: 400, damping: 10, duration: 0.15 },
+                  scale: 1.05,
+                  y: -5,
+                  boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
                 }}
               >
                 <img
@@ -193,27 +221,96 @@ function LandingPage() {
                 <h2 className="text-2xl sm:text-3xl font-semibold text-gray-900 dark:text-white mb-2">
                   {card.title}
                 </h2>
-                <p className="text-gray-700 dark:text-gray-300 text-base mt-2 md:mt-4 leading-relaxed max-w-[250px]">
+                <p className="text-gray-700 dark:text-gray-300 text-base mt-2 leading-relaxed max-w-[250px]">
                   {card.desc}
                 </p>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </motion.div>
-        
+
         {/* Bagian Iklan */}
-        <motion.div className="pt-[240px] gap-16 flex flex-row items-center justify-center">
-           <motion.img
+        <motion.div
+          className="pt-[240px] flex flex-col-reverse md:flex-row items-center justify-center gap-10 md:gap-16 px-4 text-center md:text-left"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <motion.img
             src="/src/assets/iplebihbagus.png"
             alt="Hape Gambar"
-            className="w-96"
-           >
+            className="w-64 sm:w-80 md:w-96 max-w-full h-auto"
+          />
+          <div className="flex flex-col items-center md:items-start">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold max-w-[600px] dark:text-white mb-8 md:mb-16 leading-snug">
+              Semua Hafalanmu,{" "}
+              <span className="tracking-wide">
+                dalam satu{" "}
+                <span className="text-emerald-600 dark:text-emerald-400">Aplikasi</span>
+              </span>
+            </h1>
+            <p className="text-base sm:text-lg md:text-xl font-normal tracking-widest dark:text-white max-w-[600px]">
+              IngetIn membantu anda mencatat, mengulang, dan menjaga hafalan dengan cara yang
+              mudah dan menyenangkan. Tanpa ribet, lupa, kapan pun anda butuh.
+            </p>
+          </div>
+        </motion.div>
 
-           </motion.img>
-           <motion.div>
-            <motion.h1 className="text-5xl font-semibold w-[600px] dark:text-white mb-16">Semua Hafalanmu, <motion.span className="tracking-wide">dalam satu <motion.span className="text-emerald-600 dark:text-emerald-400">Aplikasi</motion.span></motion.span></motion.h1>
-            <motion.p className="text-xl font-normal tracking-widest dark:text-white w-[600px]">IngetIn membantu anda mencatat, mengulang, dan menjaga hafalan dengan cara yang mudah dan menyenangkan. Tanpa ribet, lupa, kapan pun anda butuh.</motion.p>
-           </motion.div>
+        {/* Testimonial Carousel */}
+        <motion.div
+          className="mt-32 px-4 md:px-16 overflow-hidden relative"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1 className="text-4xl md:text-5xl font-semibold text-gray-900 dark:text-white text-center mb-16">
+            Apa Kata Mereka
+          </h1>
+
+          {/* Tombol Navigasi */}
+          <button
+            onClick={handlePrev}
+            className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full p-3 shadow-lg z-10"
+          >
+            ‹
+          </button>
+
+          <button
+            onClick={handleNext}
+            className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full p-3 shadow-lg z-10"
+          >
+            ›
+          </button>
+
+          {/* Carousel */}
+          <motion.div
+            className="flex space-x-6 cursor-grab pb-6"
+            animate={controls}
+            drag="x"
+            dragConstraints={{ left: maxScroll, right: 0 }}
+          >
+            {testimonials.map((item, i) => (
+              <motion.div
+                key={i}
+                className="bg-white dark:bg-gray-700 rounded-2xl shadow-lg p-8 min-w-[300px] max-w-[320px] flex-shrink-0 text-center mx-auto"
+              >
+                <img
+                  src={item.img}
+                  alt={item.name}
+                  className="w-[150px] h-[150px] rounded-full mx-auto mb-6 object-cover border-4 border-emerald-500"
+                />
+                <p className="text-gray-600 dark:text-gray-300 italic mb-4">
+                  “{item.text}”
+                </p>
+                <h3 className="text-gray-500 dark:text-gray-400 font-semibold">{item.name}</h3>
+                <div className="flex justify-center mt-2">
+                  {"⭐".repeat(item.rating)}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
         </motion.div>
 
         <div className="h-24 md:h-32" />
