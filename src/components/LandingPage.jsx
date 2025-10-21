@@ -13,55 +13,55 @@ function LandingPage() {
 
   const testimonials = [
   {
-    img: "./src/assets/testimonial1.png",
+    img: "/assets/testimonial1.png",
     name: "Sk3cho0",
     text: "Aplikasinya bener-bener ngebantu banget buat nyusun hafalan. Sekarang muroja’ah jadi lebih teratur.",
     rating: 5,
   },
   {
-    img: "/src/assets/testimonial2.png",
+    img: "/assets/testimonial2.png",
     name: "Siti Nurhaliza",
     text: "Interface-nya lembut banget, mata ga capek. Cocok buat anak-anak juga.",
     rating: 5,
   },
   {
-    img: "/src/assets/testimonial3.png",
+    img: "/assets/testimonial3.png",
     name: "Fahri Al Faruq",
     text: "Fitur pengingatnya keren, tiap buka aplikasi langsung inget hafalan yang belum selesai.",
     rating: 4,
   },
   {
-    img: "/src/assets/testimonial4.png",
+    img: "/assets/testimonial4.png",
     name: "Mira Latifah",
     text: "Sangat berguna buat santri, simple dan efisien.",
     rating: 5,
   },
   {
-    img: "/src/assets/testimonial5.png",
+    img: "/assets/testimonial5.png",
     name: "Abdul Karim",
     text: "Dulu sering lupa muroja’ah, sekarang tiap hari diingatkan. MasyaAllah!",
     rating: 5,
   },
   {
-    img: "/src/assets/testimonial6.png",
+    img: "/assets/testimonial6.png",
     name: "Fatimah Zahra",
     text: "Suka banget sama tampilannya, elegan dan adem. Ga berat juga di HP.",
     rating: 4,
   },
   {
-    img: "/src/assets/testimonial7.png",
+    img: "/assets/testimonial7.png",
     name: "Umar Hanif",
     text: "Kalau ada fitur set target hafalan mingguan bakal lebih keren lagi.",
     rating: 4,
   },
   {
-    img: "/src/assets/testimonial8.png",
+    img: "/assets/testimonial8.png",
     name: "Dina Khairunnisa",
     text: "Udah nyobain banyak app hafalan, tapi ini paling stabil dan gampang dipakai.",
     rating: 5,
   },
   {
-    img: "/src/assets/testimonial9.png",
+    img: "/assets/testimonial9.png",
     name: "Taufiq Ramadhan",
     text: "Auto reminder dan tampilan dark mode-nya bikin nyaman banget waktu malam hari.",
     rating: 5,
@@ -155,7 +155,7 @@ function LandingPage() {
           transition={{ duration: 0.6 }}
         >
           <motion.img
-            src="/src/assets/logo-ingetin.png"
+            src="/assets/logo-ingetin.png"
             alt="IngetIn Logo"
             className="w-[300px] md:w-[410px] h-[300px] md:h-[410px]"
           />
@@ -190,17 +190,17 @@ function LandingPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                img: "/src/assets/money1.png",
+                img: "/assets/money1.png",
                 title: "Gratis Untuk Semua",
                 desc: "Akses penuh untuk semua pengguna, gratis selamanya.",
               },
               {
-                img: "/src/assets/kilat1.png",
+                img: "/assets/kilat1.png",
                 title: "Praktis dan Cepat",
                 desc: "Mulai hafalan kapan saja tanpa ribet.",
               },
               {
-                img: "/src/assets/like1.png",
+                img: "/assets/like1.png",
                 title: "Mudah Digunakan",
                 desc: "Antarmuka simpel dan responsif di semua perangkat.",
               },
@@ -239,7 +239,7 @@ function LandingPage() {
           transition={{ duration: 0.8 }}
         >
           <motion.img
-            src="/src/assets/iplebihbagus.png"
+            src="/assets/iplebihbagus.png"
             alt="Hape Gambar"
             className="w-64 sm:w-80 md:w-96 max-w-full h-auto"
           />

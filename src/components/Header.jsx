@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import useDarkMode from "../Hooks/useDarkMode";
-import logo from "../assets/logo-ingetin.png";
+import logo from "/assets/logo-ingetin.png";
 import { Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-hot-toast";
