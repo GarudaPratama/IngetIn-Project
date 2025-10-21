@@ -5,6 +5,7 @@ import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import Header from "./Header";
 
+
 function LandingPage() {
   const particlesInit = async (main) => {
     await loadFull(main);
@@ -12,7 +13,7 @@ function LandingPage() {
 
   const testimonials = [
   {
-    img: "/src/assets/testimonial1.png",
+    img: "./src/assets/testimonial1.png",
     name: "Sk3cho0",
     text: "Aplikasinya bener-bener ngebantu banget buat nyusun hafalan. Sekarang muroja’ah jadi lebih teratur.",
     rating: 5,
