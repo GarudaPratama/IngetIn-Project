@@ -96,7 +96,7 @@ function LandingPage() {
             </motion.h1>
 
             <motion.p
-              className="text-gray-700 dark:text-gray-300 mb-16 text-lg sm:text-xl"
+              className="text-gray-700 dark:text-gray-300 mb-16 font-normal sm:text-xl"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.4 }}
@@ -114,7 +114,7 @@ function LandingPage() {
                   to="/app"
                   className="px-6 py-3 md:px-8 md:py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-semibold shadow-lg transition-all"
                 >
-                  Coba Gratis
+                  Mulai Sekarang
                 </Link>
               </motion.div>
             </motion.div>
@@ -130,7 +130,7 @@ function LandingPage() {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <motion.h1
-            className="text-4xl sm:text-5xl md:text-5xl font-bold text-gray-900 dark:text-white text-center mb-16"
+            className="text-4xl sm:text-5xl md:text-5xl font-semibold text-gray-900 dark:text-white text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -202,17 +202,17 @@ function LandingPage() {
         </motion.div>
         
         {/* Bagian Iklan */}
-        <motion.div className="pt-[220px] flex flex-row items-center justify-center">
+        <motion.div className="pt-[240px] gap-16 flex flex-row items-center justify-center">
            <motion.img
-            src="/src/assets/iphone.png"
+            src="/src/assets/iplebihbagus.png"
             alt="Hape Gambar"
             className="w-96"
            >
 
            </motion.img>
            <motion.div>
-            <motion.h1 className="text-5xl font-bold w-[500px] dark:text-white">Semua Hafalanmu, dalam satu Aplikasi</motion.h1>
-            <motion.p className="text-2xl font dark:text-white w-[700px]">IngetIn membantu anda mencatat, mengulang, dan menjaga hafalan dengan cara yang mudah dan menyenangkan. Tanpa ribet, lupa, kapan pun anda butuh.</motion.p>
+            <motion.h1 className="text-5xl font-semibold w-[600px] dark:text-white mb-16">Semua Hafalanmu, <motion.span className="tracking-wide">dalam satu <motion.span className="text-emerald-600 dark:text-emerald-400">Aplikasi</motion.span></motion.span></motion.h1>
+            <motion.p className="text-xl font-normal tracking-widest dark:text-white w-[600px]">IngetIn membantu anda mencatat, mengulang, dan menjaga hafalan dengan cara yang mudah dan menyenangkan. Tanpa ribet, lupa, kapan pun anda butuh.</motion.p>
            </motion.div>
         </motion.div>
 
