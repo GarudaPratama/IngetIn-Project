@@ -13,7 +13,7 @@ function LandingPage() {
 
   const testimonials = [
   {
-    img: "/assets/testimonial1.png",
+    img: "public/assets/testimonial1.png",
     name: "Sk3cho0",
     text: "Aplikasinya bener-bener ngebantu banget buat nyusun hafalan. Sekarang muroja’ah jadi lebih teratur.",
     rating: 5,
